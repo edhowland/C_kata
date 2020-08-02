@@ -3,7 +3,7 @@ Tutorials and katas for the C programming language
 
 ## Kata number
 
-Kata-1
+Kata-2
 
 ## Abstract
 
