@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[]) {
   if (argc > 1) {
-    printf("second option\n");
+    printf("Hello person named %s\n", argv[1]);
   } else {
     printf("Hello World!\n"); 
   }
