@@ -7,6 +7,8 @@ int main(int argc, char **argv) {
   char *bname = basename(argv[0]);
   if (strncmp(bname, "yhwh", strlen(bname)) == 0) {
     printf("I am YWHW\n");
+  } else if (strncmp(bname, "iam", strlen(bname)) == 0) {
+    printf("I Am That I Am\n");
   } else {
     printf("I am %s\n", bname);
   }
