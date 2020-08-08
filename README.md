@@ -54,3 +54,10 @@ I am ./a.out
 This technique combined with the conditional 'if' statement can be used to
 change the behaviour of the application.
 
+This can be seen in:
+
+- gunzip, zcat
+- vim, vi and view
+- busybox : Over 300 possible names
+
+
