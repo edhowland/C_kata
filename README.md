@@ -61,6 +61,11 @@ So, technically,  we will have 2 functions in our code.
 1. main()
 2. add()
 
+### The source file
+
+To play along, please examine: add2nums.c
+
+
 ## The add function
 
 These are the things to know about the  add() function
