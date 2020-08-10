@@ -61,6 +61,23 @@ So, technically,  we will have 2 functions in our code.
 1. main()
 2. add()
 
+## The add function
+
+These are the things to know about the  add() function
+
+- It returns an integer: int add(...)
+- It takes 2 integer arguments: x and y
+-  It computes the sum of x and y and returns it.
+
+It should be declared ahead of our main function so the compiler can resolve
+its type ahead of time.
+
+## The main() function.
+
+Inside of main, we declare a variable called sum which is an integer.
+We initialize it to the result of calling add(1, 2).
+Finally, we print the result with our format string.
+
 
 
 
