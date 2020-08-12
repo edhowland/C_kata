@@ -11,6 +11,12 @@ Find all katas here by git tag.
 
 E.g. The first kata is kata-1 tag.
 
+## Previous Katas
+
+- [kata-1](kata-1/kata-1.md)
+- [kata-2](kata-2/kata-2.md)
+- [kata-3](kata-3/kata-3.md)
+
 ## Kata 4 Functions - User functions
 
 In this kata we will explore writing custom or user-defined functions.
