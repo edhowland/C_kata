@@ -3,7 +3,7 @@ Tutorials and katas for the C programming language
 
 ## Kata number
 
-Kata-3
+Kata-4 : Functions
 
 ## Abstract
 
@@ -11,158 +11,205 @@ Find all katas here by git tag.
 
 E.g. The first kata is kata-1 tag.
 
+## Previous Katas
 
+- [kata-1](kata-1/kata-1.md)
+- [kata-2](kata-2/kata-2.md)
+- [kata-3](kata-3/kata-3.md)
 
-## Kata 3
+## Kata 4 Functions - User functions
 
-Kata 3 explores the conditional branch with 'if/else' statements.
+In this kata we will explore writing custom or user-defined functions.
+In C we have already seen some standard or builtin functions:
 
-Kata 3 is just an initial  attempt at selection.
+- printf
+- strlen
+- basename
 
-## Selection
+... .etc
 
-"When you come to a fork in the road, take it." - Yogi Berra.
+These functions are usualy defined for us in standard header files \[*.h\]
 
-In 'iffy.c', we we will select between 2 alternative based on what was passed
-on the command line.
-
-
-
-## The 'if' statement
-
-In C, we can use the 'if' statement to choose between 2 alternatives based on
-some boolean expression.
-
-### Boolean expressions
-
-There are several  relational operators in C. Here we are going to use the
-'>', [greater than] operator.
+E.g.
 
 ```C
-if (argc > 1) {
-  // .... The true branch
-}
-```
-
-If the number of arguments to the program exceeds 0, then this true branch
-will be taken. Note: In Unix/Linux, the first argument is always the name of
-the program itself. See 'self.c'
-
-
-## The 'else' or false branch
-
-If we only give one block after the boolean expression [surrounded by parens],
-then whatever follows the block surrounded by curly braces is always executed.
-
-However, we can follow the right curly brace by an 'else' block. This block
-will only be be executed if the  boolean conditional is false.
-
-```C
-  if (argc > 1) {
-    printf("Hello person named %s\n", argv[1]);
-  } else {
-    printf("Hello World!\n"); 
-  }
-```
-
-
-
-
-
-#### Self program
-
-In Unix/Linux, int argc is always at least 1. char *argv[0] is always the
-name of the executable itself.
-
-
-```C
-// self.c - who am i?
 #include <stdio.h>
+#include <string.h>
 
+//...
+
+printf("format string %s", "foo");
+len = strlen("hello world");
+```
+
+
+Now, however,  we are going to define our own functions and use them in our code.
+
+## The main() function
+
+We have already encountered one of our own user-defined function: main.
+
+
+```C
 int main(int argc, char **argv) {
-  printf("I am %s\n", argv[0]);
-  return 0;
+  // body of code goes here
 }
 ```
 
-We can try this out and check the difference between gccc and make:
+Every C program needs a main() function. You can consider this function
+as necessary boilerplate code. It must be present  somewhere.
+
+## Our first function
+
+This will be a function to add 2 integers and be outside  of our main() function.
+So, technically,  we will have 2 functions in our code.
+
+1. main()
+2. add()
+
+### The source file
+
+To play along, please examine: add2nums.c
+
+
+## The add function
+
+These are the things to know about the  add() function
+
+- It returns an integer: int add(...)
+- It takes 2 integer arguments: x and y
+-  It computes the sum of x and y and returns it.
+
+It should be declared ahead of our main function so the compiler can resolve
+its type ahead of time.
+
+## The main() function.
+
+Inside of main, we declare a variable called sum which is an integer.
+We initialize it to the result of calling add(1, 2).
+Finally, we print the result with our format string.
+
+## Another example: How many args were passed to the program
+
+The program count_args.c is a little more dynamic. It responds the number
+of arguments you pass to it. It relys on the fact that 'int argc' is already
+equal to 1 because char *argv[0] is the name of the program itself: 'count_args'
+
+Therefore, if you pass more arguments, argc goes up by one each time.
+
+E.g.
 
 ```bash
-$ make self
-cc     self.c   -o self
-office ls self
-self
-$ ./self 
-I am ./self
-#
-$ gcc self.c
-$ ls a.out
-a.out
-$ ./a.out 
-I am ./a.out
+
+$ ./count_args 
+You passed me 0 arguments
+$ ./count_args  1
+You passed me 1 arguments
+$ ./count_args  1 2
+You passed me 2 arguments
 ```
 
-This technique combined with the conditional 'if' statement can be used to
-change the behaviour of the application.
+### The count_args() function
 
-This can be seen in:
+The 'int count_args(int argc)' function takes
 
-- gunzip, zcat
-- vim, vi and view
-- busybox : Over 300 possible names
+- One integer argument. Possibly coming form argc passed to main.
+- Returns an integer
+- Computes the result of subtracting 1 from argc
 
 
-### Note on man pages
+### Split code between 3 files
 
-In the final example 'iam.c' we will be using many more functions from the
-C standard library. You can get documentation  on these in section 3 of
-the man pages.
+The count_args program  is split between 3 files, which is common in most
+C program projects.
+
+- count_main.c : Our boilerplate main function
+- count_args.c : The implementation of the 'int count_args(int argc)' function.
+- count_args.h : Contains the prototype of count_args() function.
+
+The header file 'count_args.h' needs to be included wherever the actual
+'count_args()' is called.  In this case, it is called in 'main()'.
+
+#### Compiling the  count_args program
 
 ```bash
-$ man 3 strlen
-$ man 3 basename
-$ man 3 strncmp
+
+gcc -o count_args count_main.c  count_args.c 
+$ 
 ```
 
 
 
 
+We give the '-o' flag to gcc to place the output inside of count_args, then both the .c files above.
 
-## Who am I?
+### Creating and including count_args.h file
 
-In the program 'iam.c', we check for 2 possibilities, based on the filename
-we are executing.
+Any .h file is just another C source file. The .h extension refers to it
+being a header file. 
 
-- iam : option 1
-- yhwh : option 2
-- foo : option 3 [escape clause any name can be used here]
+#### The Prototype pattern.
 
-### First get the nbasename of the first argument [The executable file name]
+Typically, .h files contain one or more of function prototypes contained
+in like named .c files.
 
-The basename(char *path) returns the filename with any path parts and slashes removed.
+E.g. 'count_args.h' defines the prototypes of function[s] contained in
+'count_args.c'
 
-### The if/else if/else 3-way branch
+To create the prototype, just copy the beginning of the function in its .c
+file, up to the trailing ')' right paren. And then append a semicolon.
 
-If the string comparison  of the basename with any of the 2 options returns 0,
-then that block of code is run. If no string comparison returns 0, then the
-final else clause code block is run.
+E.g.
 
+```C
+// In count_args.c:
+int count_args(int argc) {
+// Copy to count_args.h
+int count_args(int argc);
 
-
-### Making the compiled executable
-
-Let's explore another way to create our binaries, rather than just calling 'gcc'
-and then always running 'a.out'. If we use the 'make' program, it will compile
-a nicely named executable for us.
-
-```bash
-$ ls iffy.c
-iffy.c
-$ make iffy
-# ...
-$ ls iffy*
-iffy iffy.c
-$ ./iffy
-Hello World!
 ```
+
+### Including the .h header file in our .c source file
+
+Unlike standard C library functions like 'stdio.h' and 'string.h', locally
+included files must be included with thequoted version, not the '<', '>'
+surrounding characters.
+
+```C
+#include <stdio.h>
+// Here we include a locally defined header file
+#include "count_args.h"
+```
+
+
+### Good practice hint: Use the .h header file in its own .c file
+
+It is good practice to also include the corresponding .h in its like named .c file.
+This ensures that changes to the signature of the function are also captured in
+the header file as well.
+
+
+
+
+
+## Extra credit: Recursive functions
+
+The fact program computes the factorial of some number passed to it. It captures all of the creating and
+organizing user defined functions above.
+
+In addition, we parse argv[1] with the 'sscanf' standard lib function.
+This function is also defined in '<stdio.h>'.
+
+It takes:
+
+- Pointer to string to parse : In this case argv[1]
+- A simple format string : In this case: %i or integer
+- A pointer to the variable (n) where to store the result.
+
+We must take the address of the declared 'int n;' vvariable.
+
+', &n);'
+
+
+
 
