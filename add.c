@@ -1,0 +1,5 @@
+// add.c - the add(x, y) function
+
+int add(int x, int y) {
+  return x + y;
+}
