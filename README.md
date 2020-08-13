@@ -198,3 +198,18 @@ The fact program computes the factorial of some number passed to it. It captures
 organizing user defined functions above.
 
 In addition, we parse argv[1] with the 'sscanf' standard lib function.
+This function is also defined in '<stdio.h>'.
+
+It takes:
+
+- Pointer to string to parse : In this case argv[1]
+- A simple format string : In this case: %i or integer
+- A pointer to the variable (n) where to store the result.
+
+We must take the address of the declared 'int n;' vvariable.
+
+', &n);'
+
+
+
+
