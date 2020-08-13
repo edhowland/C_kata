@@ -89,6 +89,112 @@ Inside of main, we declare a variable called sum which is an integer.
 We initialize it to the result of calling add(1, 2).
 Finally, we print the result with our format string.
 
+## Another example: How many args were passed to the program
+
+The program count_args.c is a little more dynamic. It responds the number
+of arguments you pass to it. It relys on the fact that 'int argc' is already
+equal to 1 because char *argv[0] is the name of the program itself: 'count_args'
+
+Therefore, if you pass more arguments, argc goes up by one each time.
+
+E.g.
+
+```bash
+
+$ ./count_args 
+You passed me 0 arguments
+$ ./count_args  1
+You passed me 1 arguments
+$ ./count_args  1 2
+You passed me 2 arguments
+```
+
+### The count_args() function
+
+The 'int count_args(int argc)' function takes
+
+- One integer argument. Possibly coming form argc passed to main.
+- Returns an integer
+- Computes the result of subtracting 1 from argc
+
+
+### Split code between 3 files
+
+The count_args program  is split between 3 files, which is common in most
+C program projects.
+
+- count_main.c : Our boilerplate main function
+- count_args.c : The implementation of the 'int count_args(int argc)' function.
+- count_args.h : Contains the prototype of count_args() function.
+
+The header file 'count_args.h' needs to be included wherever the actual
+'count_args()' is called.  In this case, it is called in 'main()'.
+
+#### Compiling the  count_args program
+
+```bash
+
+gcc -o count_args count_main.c  count_args.c 
+$ 
+```
 
 
 
+
+We give the '-o' flag to gcc to place the output inside of count_args, then both the .c files above.
+
+### Creating and including count_args.h file
+
+Any .h file is just another C source file. The .h extension refers to it
+being a header file. 
+
+#### The Prototype pattern.
+
+Typically, .h files contain one or more of function prototypes contained
+in like named .c files.
+
+E.g. 'count_args.h' defines the prototypes of function[s] contained in
+'count_args.c'
+
+To create the prototype, just copy the beginning of the function in its .c
+file, up to the trailing ')' right paren. And then append a semicolon.
+
+E.g.
+
+```C
+// In count_args.c:
+int count_args(int argc) {
+// Copy to count_args.h
+int count_args(int argc);
+
+```
+
+### Including the .h header file in our .c source file
+
+Unlike standard C library functions like 'stdio.h' and 'string.h', locally
+included files must be included with thequoted version, not the '<', '>'
+surrounding characters.
+
+```C
+#include <stdio.h>
+// Here we include a locally defined header file
+#include "count_args.h"
+```
+
+
+### Good practice hint: Use the .h header file in its own .c file
+
+It is good practice to also include the corresponding .h in its like named .c file.
+This ensures that changes to the signature of the function are also captured in
+the header file as well.
+
+
+
+
+
+## Extra credit: Recursive functions
+
+The fact program computes the factorial of some number passed to it. It captures all of the creating and
+organizing user defined functions above.
+
+In addition, we parse argv[1] with the 'sscanf' standard lib function.
