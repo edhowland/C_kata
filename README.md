@@ -23,3 +23,16 @@ E.g. The first kata is kata-1 tag.
 
 ## No Magic numbers
 
+Upto this point, we have been declaring our return code from our main(void) function
+as a pure 0. We should not use magic numbers in our programs. Do you remember what
+'return 0;' means?
+
+Check out no_magic.c and exit_failure.c for more descriptive exit status defines.
+
+Note: you will need to also include stdlib.h:
+
+```C
+#include <stdio.h>
+#include <stdlib.h> // This one also for EXIT_SUCCESS, EXIT_FAILURE
+```
+
