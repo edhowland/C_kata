@@ -1,6 +1,6 @@
 all: main
 
-main: main.c
+main: main.c greet.c
 
 
 
