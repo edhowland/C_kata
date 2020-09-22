@@ -3,7 +3,9 @@ Tutorials and katas for the C programming language
 
 ## Kata number
 
-Kata-4 : Functions
+Kata-5 : Side Journey
+
+Kata 5 is about compiler flags, eliminating magic numbers and Makefiles.
 
 ## Abstract
 
@@ -16,200 +18,175 @@ E.g. The first kata is kata-1 tag.
 - [kata-1](kata-1/kata-1.md)
 - [kata-2](kata-2/kata-2.md)
 - [kata-3](kata-3/kata-3.md)
+- [kata-4](kata-4/kata-4.md)
 
-## Kata 4 Functions - User functions
-
-In this kata we will explore writing custom or user-defined functions.
-In C we have already seen some standard or builtin functions:
-
-- printf
-- strlen
-- basename
-
-... .etc
-
-These functions are usualy defined for us in standard header files \[*.h\]
-
-E.g.
-
-```C
-#include <stdio.h>
-#include <string.h>
-
-//...
-
-printf("format string %s", "foo");
-len = strlen("hello world");
-```
+## Kata-5 Miscellany
 
 
-Now, however,  we are going to define our own functions and use them in our code.
+## No Magic numbers
 
-## The main() function
+Upto this point, we have been declaring our return code from our main(void) function
+as a pure 0. We should not use magic numbers in our programs. Do you remember what
+'return 0;' means?
 
-We have already encountered one of our own user-defined function: main.
+Check nomagic/no_magic.c
 
-
-```C
-int main(int argc, char **argv) {
-  // body of code goes here
-}
-```
-
-Every C program needs a main() function. You can consider this function
-as necessary boilerplate code. It must be present  somewhere.
-
-## Our first function
-
-This will be a function to add 2 integers and be outside  of our main() function.
-So, technically,  we will have 2 functions in our code.
-
-1. main()
-2. add()
-
-### The source file
-
-To play along, please examine: add2nums.c
-
-
-## The add function
-
-These are the things to know about the  add() function
-
-- It returns an integer: int add(...)
-- It takes 2 integer arguments: x and y
--  It computes the sum of x and y and returns it.
-
-It should be declared ahead of our main function so the compiler can resolve
-its type ahead of time.
-
-## The main() function.
-
-Inside of main, we declare a variable called sum which is an integer.
-We initialize it to the result of calling add(1, 2).
-Finally, we print the result with our format string.
-
-## Another example: How many args were passed to the program
-
-The program count_args.c is a little more dynamic. It responds the number
-of arguments you pass to it. It relys on the fact that 'int argc' is already
-equal to 1 because char *argv[0] is the name of the program itself: 'count_args'
-
-Therefore, if you pass more arguments, argc goes up by one each time.
-
-E.g.
-
-```bash
-
-$ ./count_args 
-You passed me 0 arguments
-$ ./count_args  1
-You passed me 1 arguments
-$ ./count_args  1 2
-You passed me 2 arguments
-```
-
-### The count_args() function
-
-The 'int count_args(int argc)' function takes
-
-- One integer argument. Possibly coming form argc passed to main.
-- Returns an integer
-- Computes the result of subtracting 1 from argc
-
-
-### Split code between 3 files
-
-The count_args program  is split between 3 files, which is common in most
-C program projects.
-
-- count_main.c : Our boilerplate main function
-- count_args.c : The implementation of the 'int count_args(int argc)' function.
-- count_args.h : Contains the prototype of count_args() function.
-
-The header file 'count_args.h' needs to be included wherever the actual
-'count_args()' is called.  In this case, it is called in 'main()'.
-
-#### Compiling the  count_args program
-
-```bash
-
-gcc -o count_args count_main.c  count_args.c 
-$ 
-```
-
-
-
-
-We give the '-o' flag to gcc to place the output inside of count_args, then both the .c files above.
-
-### Creating and including count_args.h file
-
-Any .h file is just another C source file. The .h extension refers to it
-being a header file. 
-
-#### The Prototype pattern.
-
-Typically, .h files contain one or more of function prototypes contained
-in like named .c files.
-
-E.g. 'count_args.h' defines the prototypes of function[s] contained in
-'count_args.c'
-
-To create the prototype, just copy the beginning of the function in its .c
-file, up to the trailing ')' right paren. And then append a semicolon.
-
-E.g.
-
-```C
-// In count_args.c:
-int count_args(int argc) {
-// Copy to count_args.h
-int count_args(int argc);
-
-```
-
-### Including the .h header file in our .c source file
-
-Unlike standard C library functions like 'stdio.h' and 'string.h', locally
-included files must be included with thequoted version, not the '<', '>'
-surrounding characters.
+Note: you will need to also include stdlib.h:
 
 ```C
 #include <stdio.h>
-// Here we include a locally defined header file
-#include "count_args.h"
+#include <stdlib.h> // This one also for EXIT_SUCCESS, EXIT_FAILURE
+```
+
+## Warnings and Errors
+
+Up to now, we have just been using gcc with no arguments other than the following:
+
+- '-c' : Just compile into a '.o' object file
+- '-o exename' : Create an executable file  named 'exename' instead of 'a.out'
+
+
+The compiler 'gcc' has many more options which let us have more fine control the
+compilation process. Among these we can  control the level of compiler warnings
+and errors. Since we are just starting our journey, we want to maximize the help
+we get from the compiler. Therefore, we want to get all of the possible warnings
+that are available. The '-W' flag is used to control the warning level.
+
+In addition to all the possible warnings, we want to have any warning be treated
+as a compiler error.
+
+### New compiler flags
+
+- '-Wall' : Turn maximum warnings
+- '-Werror' : Treat all warnings as fatal errors.
+
+
+```bash
+$ cd warn+error
+$ gcc -Wall -Werror -o hello hello_bad.c
+
+hello_bad.c: In function main:
+hello_bad.c:5:7: error: unused variable a [-Werror=unused-variable]
+   int a;
+       ^
+cc1: all warnings being treated as errors
 ```
 
 
-### Good practice hint: Use the .h header file in its own .c file
 
-It is good practice to also include the corresponding .h in its like named .c file.
-This ensures that changes to the signature of the function are also captured in
-the header file as well.
+## Makefiles
+
+Up to now, we have been invoking gcc from the command line and telling what .c
+files to compile and link. In projects you will encounter or create on you own
+you are going to want to know how to create and modify Makefiles(s).
+
+A Makefile is the source code file for the 'make' program. It defines what to do
+to  build a project made up of (possibly) many source files.
+It does this by specifying targets and their dependencies. E.g. a target called
+'program' might depend on a file named  'program.c'. Knowing this relationship
+would mean if the file: 'program.c' changes, then the file: 'program' would need
+to  be rebuilt.
+
+Note: If no changes have occured since the last time 'program' was compiled, then
+'make' has  nothing to do, so it just exits. Because of this fact, running 'make'
+in the makefiles/ directory would have no effect. Unless you just cloned
+this repository.
+
+### Syntax of a makefile
+
+A 'Makefile' language consists of the following:
+
+- Variable settings
+- Rules
+
+#### Variables
+
+By convention, all variables are all uppercase and have no spaces between the name
+of the var and the '='
+
+```
+CFLAGS=-Wall -Werror
+```
+
+Above, 'CFLAGS' are the compiler flags passed to gcc when 'make' calls it.
+
+#### Rules
+
+A rule stanza consists of the following components
+
+1. target name followed by a ':'
+2. A list of 0 or more space separated dependicies. after the ':'
+3. A <Tab> indented optional command to be run if the target needs to be built.
+
+Note: you must supply at least either one dependency or one build command.
+
+Note: The build command must be indented by at least 1 tab character. Indenting by
+spaces will trigger a syntax error.
+
+#### Example Makefile
+
+```make
+# This is a comment
+# Set up a variable
+CFLAGS=-Wall -Werror
+
+# the default target
+all: nomagic
+
+nomagic: no_magic.c
+	$(CC) $(CFLAGS) -o nomagic no_magic.c
+```
 
 
+Note: We use '$(CC)' and '$(CFLAGS)' to dereference the value of the CC and CFLAGS
+variables. The CC variable is supplied to us and is usually gcc, unless you are
+using a different compiler like 'clang'.
+
+Note: The explicit <Tab> character before the '$(CC)' under the 'nomagic:' target.
+
+### Default targets and conventions
+
+The 'make' program will treat the first target in the 'Makefile' as the target to
+build unless given an argument was given to 'make'.
+Therfore, the convention is to place a known target called 'all' at the
+top of the 'Makefile' and give it all the programs and libraries. you want to
+build when you just run 'make'
 
 
+#### The 'clean:' target
 
-## Extra credit: Recursive functions
+It is also customary to place a 'clean:' with no depenencies as the final
+target in the Makefile. The build step is to remove all build artifacts
+such as 'a.out', '*.o', .etc.
 
-The fact program computes the factorial of some number passed to it. It captures all of the creating and
-organizing user defined functions above.
+```make
+# ...
+clean:
+	$(RM) main a.out
+```
 
-In addition, we parse argv[1] with the 'sscanf' standard lib function.
-This function is also defined in '<stdio.h>'.
 
-It takes:
+Note: Here we also remove the compiled program: 'main'
+This is handy to prevent adding to any git or other version control system, where
+we do not want any binary files.
 
-- Pointer to string to parse : In this case argv[1]
-- A simple format string : In this case: %i or integer
-- A pointer to the variable (n) where to store the result.
+Also, note we use '$RM)' pre-defined variable instead of  of 'rm -f', it gets
+translated for us.
 
-We must take the address of the declared 'int n;' vvariable.
+#### The use of the 'touch' command to force a rebuild.
 
-', &n);'
+If we want to force a recompile even though we have not changed any source documents,
+we can use the 'touch' command to update the timestamp of any source files. This
+will cause the dependency to be newer than its target which will trigger
+its build command.
 
+We can automate this by supplying a 'rebuild:' target.
+
+```make
+# ...
+rebuild:
+	touch *.[ch]
+```
 
 
 
