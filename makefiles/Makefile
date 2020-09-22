@@ -8,6 +8,10 @@ main: main.c greet.c
 main.c: greet.h
 greet.c: greet.h
 
+rebuild:
+	touch *.[ch]
+
+
 
 clean:
-	rm -f main a.out
+	$(RM) main a.out
