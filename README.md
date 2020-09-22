@@ -5,6 +5,8 @@ Tutorials and katas for the C programming language
 
 Kata-5 : Side Journey
 
+Kata 5 is about compiler flags, eliminating magic numbers and Makefiles.
+
 ## Abstract
 
 Find all katas here by git tag.
