@@ -27,13 +27,47 @@ Upto this point, we have been declaring our return code from our main(void) func
 as a pure 0. We should not use magic numbers in our programs. Do you remember what
 'return 0;' means?
 
-Check out no_magic.c and exit_failure.c for more descriptive exit status defines.
+Check nomagic/no_magic.c
 
 Note: you will need to also include stdlib.h:
 
 ```C
 #include <stdio.h>
 #include <stdlib.h> // This one also for EXIT_SUCCESS, EXIT_FAILURE
+```
+
+## Warnings and Errors
+
+Up to now, we have just been using gcc with no arguments other than the following:
+
+- '-c' : Just compile into a '.o' object file
+- '-o exename' : Create an executable file  named 'exename' instead of 'a.out'
+
+
+The compiler 'gcc' has many more options which let us have more fine control the
+compilation process. Among these we can  control the level of compiler warnings
+and errors. Since we are just starting our journey, we want to maximize the help
+we get from the compiler. Therefore, we want to get all of the possible warnings
+that are available. The '-W' flag is used to control the warning level.
+
+In addition to all the possible warnings, we want to have any warning be treated
+as a compiler error.
+
+### New compiler flags
+
+- '-Wall' : Turn maximum warnings
+- '-Werror' : Treat all warnings as fatal errors.
+
+
+```bash
+$ cd warn+error
+$ gcc -Wall -Werror -o hello hello_bad.c
+
+hello_bad.c: In function main:
+hello_bad.c:5:7: error: unused variable a [-Werror=unused-variable]
+   int a;
+       ^
+cc1: all warnings being treated as errors
 ```
 
 
