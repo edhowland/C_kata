@@ -20,7 +20,6 @@ E.g. The first kata is kata-1 tag.
 
 ## Kata-5 Miscellany
 
-### Makefiles
 
 ## No Magic numbers
 
@@ -37,3 +36,27 @@ Note: you will need to also include stdlib.h:
 #include <stdlib.h> // This one also for EXIT_SUCCESS, EXIT_FAILURE
 ```
 
+
+
+### Makefiles
+
+Up to now, we have been invoking gcc from the command line and telling what .c
+files to compile and link. In projects you will encounter or create on you own
+you are going to want to know how to create and modify Makefiles(s).
+
+A Makefile is the source code file for the 'make' program. It defines what to do
+to  build a project made up of (possibly) many source files.
+It does this by specifying targets and their dependencies. E.g. a target called
+'program' might depend on a file named  'program.c' Knowing this relationship
+would mean if the file: 'program.c' changes, then the file: 'program' would need
+to  be rebuilt.
+
+Note: If no changes have occured since the last time 'program' was compiled, then
+'make' has  nothing to do, so it just exits. Because of this fact, running 'make'
+in the makefiles/ directory would have no effect.
+
+
+```bash
+
+cc     main.c greet.c   -o main
+```
