@@ -1,3 +1,6 @@
+# Makefile for main and greet
+CFLAGS=-Wall -Werror
+
 all: main
 
 main: main.c greet.c
